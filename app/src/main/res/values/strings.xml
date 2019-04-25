@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Paint Widget</string>
+    <string name="show_paint_widget">Show Paint Widget</string>
+    <string name="width_caption">Width:</string>
+    <string name="colors_caption">Colors:</string>
+    <string name="width_default_value">0</string>
+</resources>

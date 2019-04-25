@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PaintWidget">
+        <attr name="maxWidth" format="integer" />
+        <attr name="defaultColorPosition" format="integer" />
+        <attr name="firstItemColor" format="integer" />
+    </declare-styleable>
+</resources>
