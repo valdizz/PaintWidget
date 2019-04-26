@@ -18,10 +18,9 @@ class MainActivity : AppCompatActivity(), PaintWidget.PaintWidgetListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        paintwidget.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGrey))
         paintwidget.seekbarMaxWidth = 50
         paintwidget.defaultColorPosition = 1
-        paintwidget.firstItemColor = 0
+        paintwidget.firstItemColor = "BLACK"
         paintwidget.setPaintWidgetListener(this)
         paintwidget.isVisible = savedInstanceState?.getBoolean(PAINTWIDGET_STATE) ?: true
         btn_show_hide_widget.setOnClickListener { paintwidget.isVisible = !paintwidget.isVisible }

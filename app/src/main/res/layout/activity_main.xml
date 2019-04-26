@@ -18,7 +18,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/btn_show_hide_widget"
-            android:background="#00B42525">
+            android:background="#00B42525"
+            >
     </com.valdizz.paintwidget.PaintWidget>
 
     <Button

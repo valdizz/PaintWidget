@@ -3,6 +3,6 @@
     <declare-styleable name="PaintWidget">
         <attr name="maxWidth" format="integer" />
         <attr name="defaultColorPosition" format="integer" />
-        <attr name="firstItemColor" format="integer" />
+        <attr name="firstItemColor" format="string" />
     </declare-styleable>
 </resources>

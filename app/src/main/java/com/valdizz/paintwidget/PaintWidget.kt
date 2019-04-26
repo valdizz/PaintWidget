@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.os.Parcelable
@@ -14,6 +15,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SeekBar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.paint_widget.view.*
 
 /**
@@ -40,7 +42,7 @@ class PaintWidget @JvmOverloads constructor(context: Context, attrs: AttributeSe
             initDefaultColorPosition(defaultColorPosition)
         }
 
-    var firstItemColor = 0
+    var firstItemColor = Color.BLACK.name
         set(value) {
             field = value
             initFirstItemColor(firstItemColor)
@@ -58,11 +60,13 @@ class PaintWidget @JvmOverloads constructor(context: Context, attrs: AttributeSe
         val typedArray: TypedArray= context.obtainStyledAttributes(attrs, R.styleable.PaintWidget)
         seekbarMaxWidth = typedArray.getResourceId(R.styleable.PaintWidget_maxWidth, 100)
         defaultColorPosition = typedArray.getResourceId(R.styleable.PaintWidget_defaultColorPosition, 0)
-        firstItemColor = typedArray.getResourceId(R.styleable.PaintWidget_firstItemColor, 0)
+        firstItemColor = typedArray.getString(R.styleable.PaintWidget_firstItemColor) ?: Color.BLACK.name
         typedArray.recycle()
     }
 
     private fun initView() {
+        setBackgroundColor(ContextCompat.getColor(context, R.color.colorGrey))
+
         initRadioButton(radio_btn_color2, Color.RED.hex)
         initRadioButton(radio_btn_color3, Color.GREEN.hex)
         initRadioButton(radio_btn_color4, Color.BLUE.hex)
@@ -79,18 +83,15 @@ class PaintWidget @JvmOverloads constructor(context: Context, attrs: AttributeSe
                 tv_width_value.text = seekBar?.progress.toString()
             }
         })
+    }
 
-        radio_btn_color1.setOnClickListener {
-            paintWidgetListener?.onChanged(seekbar_width.progress.toString(), it.tag.toString())
-        }
-        radio_btn_color2.setOnClickListener {
-            paintWidgetListener?.onChanged(seekbar_width.progress.toString(), it.tag.toString())
-        }
-        radio_btn_color3.setOnClickListener {
-            paintWidgetListener?.onChanged(seekbar_width.progress.toString(), it.tag.toString())
-        }
-        radio_btn_color4.setOnClickListener {
-            paintWidgetListener?.onChanged(seekbar_width.progress.toString(), it.tag.toString())
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        radio_btn_colors.setOnCheckedChangeListener { group, checkedId ->
+            val hexColor = getCheckedRadioButtonTag(group)
+            paintWidgetListener?.onChanged(seekbar_width.progress.toString(), hexColor)
+            val gradientDrawable = (seekbar_width.thumb as LayerDrawable).getDrawable(0) as GradientDrawable
+            gradientDrawable.setColor(android.graphics.Color.parseColor(hexColor))
         }
     }
 
@@ -114,9 +115,9 @@ class PaintWidget @JvmOverloads constructor(context: Context, attrs: AttributeSe
         }
     }
 
-    private fun initFirstItemColor(color: Int) {
-        if (color >= 0 && color < Color.values().size) {
-            initRadioButton(radio_btn_color1, Color.values()[color].hex)
+    private fun initFirstItemColor(color: String) {
+        if (Color.values().any { it.name == color }) {
+            initRadioButton(radio_btn_color1, Color.valueOf(color).hex)
         }
         else {
             throw IllegalArgumentException("Invalid color value")
