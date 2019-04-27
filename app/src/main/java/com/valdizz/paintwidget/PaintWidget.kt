@@ -90,9 +90,9 @@ class PaintWidget @JvmOverloads constructor(context: Context, attrs: AttributeSe
         radio_btn_colors.setOnCheckedChangeListener { group, checkedId ->
             val hexColor = getCheckedRadioButtonTag(group)
             paintWidgetListener?.onChanged(seekbar_width.progress.toString(), hexColor)
-            val gradientDrawable = (seekbar_width.thumb as LayerDrawable).getDrawable(0) as GradientDrawable
-            gradientDrawable.setColor(android.graphics.Color.parseColor(hexColor))
+            setThumbColor(hexColor)
         }
+        setThumbColor(getCheckedRadioButtonTag(radio_btn_colors))
     }
 
     fun setPaintWidgetListener(context: Context) {
@@ -149,6 +149,11 @@ class PaintWidget @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private fun getCheckedRadioButtonTag(rg: RadioGroup): String {
         return rg.findViewById<RadioButton>(rg.checkedRadioButtonId).tag.toString()
+    }
+
+    private fun setThumbColor(color: String) {
+        val gradientDrawable = (seekbar_width.thumb as LayerDrawable).getDrawable(0) as GradientDrawable
+        gradientDrawable.setColor(android.graphics.Color.parseColor(color))
     }
 
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
